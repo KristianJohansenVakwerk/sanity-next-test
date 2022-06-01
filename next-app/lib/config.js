@@ -1,6 +1,6 @@
 export const config = {
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
-  projectId: process.env.SANITY_STUDIO_PROJECTID,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   apiVersion: '2022-05-31', // Learn more: https://www.sanity.io/docs/api-versioning
   /**
    * Set useCdn to `false` if your application require the freshest possible

@@ -4,7 +4,7 @@ import { groq } from 'next-sanity'
 import styles from '../../styles/Home.module.css'
 import { getClient } from '../../lib/sanity-server'
 import { usePreviewSubscription } from '../../lib/sanity'
-
+import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 const postQuery = groq`
@@ -51,18 +51,23 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params, preview = false }: any) {
   const data = await getClient(preview).fetch(postQuery, params)
+  const queryParams = { slug: `${params?.slug}` }
+
+  if (!data) return { notFound: true }
 
   const post = filterDataToSingleItem(data, preview)
   return {
     props: {
       preview,
       post,
-      params,
+      params: preview ? queryParams : null,
     },
   }
 }
 
 const Post: NextPage = ({ post, preview, params }: any) => {
+  const { asPath } = useRouter()
+
   const { data: previewData } = usePreviewSubscription(postQuery, {
     params: params || {},
     // The hook will return this on first render
@@ -84,7 +89,12 @@ const Post: NextPage = ({ post, preview, params }: any) => {
       </Head>
 
       <main className={styles.main}>
-        {page.title}
+        {preview && (
+          <Link href={`/api/exit-preview?slug=${asPath}`}>
+            Exit Preview Mode
+          </Link>
+        )}
+        {page?.title && page.title}
         <Link href={`/`}>
           <a>Home</a>
         </Link>

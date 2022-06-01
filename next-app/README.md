@@ -84,6 +84,13 @@ Create two files inside ./web/pages/api
   }
 ```
 
+You should now be able to visit the preview route at http://localhost:3000/api/preview and be greeted with an error.
+
+The Preview route requires two params:
+
+A secret which can be any random string known only to your Studio and Next.js
+A slug to redirect to once authenticated – that slug is then used to query the document
+
 ## Setting up the Production Preview plugin for Sanity Studio
 
 ## Out the box guidelines from next.js
